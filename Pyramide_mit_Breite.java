@@ -9,7 +9,7 @@ import javakara.JavaKaraProgram;
  *   mushroomFront()  onLeaf()
  */
 
-public class Dreieck extends JavaKaraProgram {
+public class Pyramide_mit_Breite extends JavaKaraProgram {
 	
 	// Hier kommen die Methoden hin
 	public void myProgram(){
