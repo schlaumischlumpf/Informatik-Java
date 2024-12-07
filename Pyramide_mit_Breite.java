@@ -1,6 +1,6 @@
 // Pyramide_mit_Breite.java
 // Erstellt von Moritz und Lennart
-// letzte Änderung 2024-12-07, 15:00 Uhr MEZ
+// letzte Änderung 2024-12-07, 16:42 Uhr MEZ
 
 /*
 	In diesem Programm soll Kara ein gleichschenkliges Dreieck mit beliebiger Grundseite
@@ -30,7 +30,7 @@ public class Pyramide_mit_Breite extends JavaKaraProgram {
 	}
 	
 	//Methode zum Bau des Dreiecks
-	public void build_triangle() {
+	public void build_triangle() { 
 		if (direction == false) { // Laufrichtung rechts
 			for (int i = 0; i < base_length; i++) {
 				if (!kara.onLeaf()) {
