@@ -1,6 +1,6 @@
 // Pyramide_mit_Breite.java
-// Erstellt von Moritz und Lennart
-// letzte Änderung 2024-12-07, 16:42 Uhr MEZ
+// Erstellt von Lennart
+// letzte Änderung 2024-12-07, 19:50 Uhr MEZ
 
 /*
 	In diesem Programm soll Kara ein gleichschenkliges Dreieck mit beliebiger Grundseite
@@ -8,7 +8,7 @@
 */
 
 import javakara.JavaKaraProgram;
-// import java.util.Scanner;
+import java.util.Scanner;
 
 /* BEFEHLE:  kara.
  *   move()  turnRight()  turnLeft()
@@ -87,29 +87,45 @@ public class Pyramide_mit_Breite extends JavaKaraProgram {
 		}
 	}
 	
+	public void world_reset() {
+		tools.showMessage("Die Welt wird zurückgesetzt!");
+		world.clearAll();
+		world.setSize(9, 9); 
+	}
+	
 	public void myProgram(){
-		 world.clearAll();
+		while (true) {
+			world.clearAll();
 		
-		//Variablen für die Weltgröße
-		int size_x = world.getSizeX(); // Weltbreite
-		int size_y = world.getSizeY(); // Welthöhe
+			//Variablen für die Weltgröße
+			int size_x = world.getSizeX(); // Weltbreite
+			int size_y = world.getSizeY(); // Welthöhe
 		
-		this.number_input();
+			this.number_input();
 				
-		int triangle_height = (base_length-1) / 2; // Berechnung der Pyramidenhöhe
+			int triangle_height = (base_length-1) / 2; // Berechnung der Pyramidenhöhe
 		
-		if (base_length > size_x || triangle_height > size_y) {
-			int new_size_x = Math.max(size_x, base_length);
-			int new_size_y = Math.max(size_y, triangle_height);
-			world.setSize(new_size_x, new_size_y+1);  // Setze die Weltgröße nur einmal
-			size_x = world.getSizeX();
-			size_y = world.getSizeY();
-		}
+			if (base_length > size_x || triangle_height > size_y) {
+				int new_size_x = Math.max(size_x, base_length);
+				int new_size_y = Math.max(size_y, triangle_height);
+				world.setSize(new_size_x, new_size_y+1);  // Setze die Weltgröße nur einmal
+				size_x = world.getSizeX();
+				size_y = world.getSizeY();
+			}
 		
-		kara.setPosition(0, size_y-1);
+			kara.setPosition(0, size_y-1);
 		
-		while (base_length > 0) {
-			this.build_triangle();
+			while (base_length > 0) {
+				this.build_triangle();
+			}
+			
+			String restart = tools.stringInput("Nochmal starten?");
+			restart = restart.trim();
+			if (restart.equalsIgnoreCase("Nein")) {
+				break;
+			} else {
+				this.world_reset();
+			}
 		}
 	}
 }
