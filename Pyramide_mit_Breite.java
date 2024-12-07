@@ -23,10 +23,6 @@ public class Pyramide_mit_Breite extends JavaKaraProgram {
 	
 	int base_length = 0; // Länge der Grundseite
 	boolean direction = false; // Laufrichtung von Kara; false = rechts, true = links
-	
-	// Variablen für die Weltgröße
-	//int size_x = world.getSizeX(); // Weltbreite
-	//int size_y = world.getSizeY(); // Welthöhe
 
 	public void number_input() { // Eingabe der Länge der Grundseite
 		base_length = tools.intInput("Bitte gib die Länge der Grundseite ein: "); // integer-Eingabe
@@ -91,22 +87,26 @@ public class Pyramide_mit_Breite extends JavaKaraProgram {
 		}
 	}
 	
-	/* public void adjust_world_size() {
-		world.clearAll();
-		if (base_length > size_x) {
-			world.setSize (base_length, ((base_length-1) / 2));
+	public void myProgram(){
+		 world.clearAll();
+		
+		//Variablen für die Weltgröße
+		int size_x = world.getSizeX(); // Weltbreite
+		int size_y = world.getSizeY(); // Welthöhe
+		
+		this.number_input();
+				
+		int triangle_height = (base_length-1) / 2; // Berechnung der Pyramidenhöhe
+		
+		if (base_length > size_x || triangle_height > size_y) {
+			int new_size_x = Math.max(size_x, base_length);
+			int new_size_y = Math.max(size_y, triangle_height);
+			world.setSize(new_size_x, new_size_y+1);  // Setze die Weltgröße nur einmal
 			size_x = world.getSizeX();
-		}
-		if (((base_length-1) / 2) > size_y) {
-			world.setSize (base_length, ((base_length-1) / 2));
 			size_y = world.getSizeY();
 		}
-		kara.setPosition (0, 0);
-	}
-	*/
-	
-	public void myProgram(){
-		this.number_input();
+		
+		kara.setPosition(0, size_y-1);
 		
 		while (base_length > 0) {
 			this.build_triangle();
