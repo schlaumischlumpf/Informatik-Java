@@ -1,6 +1,6 @@
 // Pyramide_mit_Breite.java
 // Erstellt von Moritz und Lennart
-// letzte Änderung 2024-12-07, 13:00 Uhr MEZ
+// letzte Änderung 2024-12-07, 15:00 Uhr MEZ
 
 /*
 	In diesem Programm soll Kara ein gleichschenkliges Dreieck mit beliebiger Grundseite

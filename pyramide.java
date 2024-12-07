@@ -44,9 +44,9 @@ public class pyramide extends JavaKaraProgram {
     } else {
       if (weg_hin == true) {
         for (int i = 0; i < y*2-1; i++) {
-        if (!kara.onLeaf()) {
-          kara.putLeaf();
-        }
+		  if (!kara.onLeaf()) {
+            kara.putLeaf();
+          }
           if (!kara.treeFront()){
             kara.move();
           }
