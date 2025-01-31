@@ -89,7 +89,6 @@ Bruch
 Brust
 Buchs
 Buero
-Busen
 Dachs
 Dampf
 Decke
@@ -144,5 +143,4 @@ Start
 Dauer
 Tiefe
 Treue
-Dauer
 Ferne
