@@ -31,11 +31,12 @@ public class WordleGame {
     int gametype; // 1 = normaler Schwierigkeits, 2 = erhöhter Schwierigkeitsgrad, 3 = Challenge-Modus (noch nicht implementiert; Idee für zukünftige Erweiterungen)
     int AnzahlSpiele; // Counter, der die Anzahl der gespielten Spiele zählt
     long besteZeit = Long.MAX_VALUE; // Variable für die beste Zeit, die benötigt wurde, um das Wort zu erraten
+    boolean Debug; // Boolean um zu überprüfen ob der Debugmodus an ist
 
     // Liste der Wörter für das Spiel (initial leer, wird aus Datei geladen)
     private static List<String> WORD_LIST = new ArrayList<>();
 
-    private Set<Character> usedLetters = new HashSet<>(); // Set für die verwendeten Buchstaben
+    private final Set<Character> usedLetters = new HashSet<>(); // Set für die verwendeten Buchstaben
     private boolean allowRepeatedLetters = true; // Einstellung, ob wiederholte Buchstaben erlaubt sind
 
     // Das geheime Wort (wird intern zur Verarbeitung in Großbuchstaben verwendet)
@@ -62,7 +63,7 @@ public class WordleGame {
     private Instant startTime;
 
     // Pfad zur Datei mit den Wörtern
-    private static final String filePath = "E:/Java/Wordle/src/Wortliste.txt"; // Pfad bitte genau anpassen, damit das Programm immer reibungslos funktioniert (z.B. C:/Users/Name/Desktop/Wortliste.txt)
+    private static final String filePath = "Wortliste.txt"; // Pfad bitte genau anpassen, damit das Programm immer reibungslos funktioniert (z.B. C:/Users/Name/Desktop/Wortliste.txt)
         
     // JFrame für das Hauptmenü
     private JFrame mainMenuFrame;
@@ -107,8 +108,11 @@ public class WordleGame {
     
         JCheckBox allowRepeatedLettersCheckBox = new JCheckBox("Wiederholte Buchstaben erlauben", allowRepeatedLetters); // Checkbox, um wiederholte Buchstaben zu erlauben
         allowRepeatedLettersCheckBox.addItemListener(e -> allowRepeatedLetters = allowRepeatedLettersCheckBox.isSelected()); // ItemListener für die Checkbox hinzufügen, um zu prüfen, ob wiederholte Buchstaben erlaubt sind
+        JCheckBox DebugCheckBox = new JCheckBox("Debug Modus", Debug); // Checkbox, um wiederholte Buchstaben zu erlauben
+        DebugCheckBox.addItemListener(e -> Debug = DebugCheckBox.isSelected());
     
         settingsFrame.add(allowRepeatedLettersCheckBox); // Checkbox wird dem Einstellungsmenü hinzugefügt
+        settingsFrame.add(DebugCheckBox);
     
         settingsFrame.setVisible(true); // Das Einstellungsmenü wird sichtbar gemacht
     }
@@ -216,7 +220,15 @@ public class WordleGame {
     // Behandlung der Eingabe des Benutzers
     private void handleSubmit() {
         String guess = inputField.getText().toUpperCase(); // Eingabe des Benutzers wird in Großbuchstaben umgewandelt, dmait die Eingabe nicht auf Groß- und Kleinschreibung ankommt
-    
+        
+        if (Debug == true)  {
+            if (guess.toUpperCase().equals("DEBUG"))    {
+                JOptionPane.showMessageDialog(frame, "Das Wort lautet: " + secretWord + "\nBereits geraten wurden: " + usedLetters);
+                inputField.setText("");
+                return;
+            }
+        }
+
         // Überprüfung, ob das eingegebene Wort in der Wortliste enthalten ist
         if (!WORD_LIST.contains(guess.toLowerCase())) {
             JOptionPane.showMessageDialog(frame, "Das eingegebene Wort befindet sich nicht in der Wortliste. Bitte versuche es erneut mit einem anderen Wort."); // Meldung, dass das eingegebene Wort nicht in der Wortliste enthalten ist
@@ -321,16 +333,24 @@ public class WordleGame {
         Instant endTime = Instant.now(); // Benötigte Zeit wird gestoppt
         Duration duration = Duration.between(startTime, endTime); // Berechnung der Spieldauer
         long seconds = duration.getSeconds(); // Umwandlung der Dauer in Sekunden
-        if (besteZeit > seconds) { // Prüfen, ob die benötigte Zeit besser ist als die bisher beste Zeit
+        if (besteZeit > seconds && Debug == false) { // Prüfen, ob die benötigte Zeit besser ist als die bisher beste Zeit
             besteZeit = seconds; // Wenn ja, wird die benötigte Zeit wird als beste Zeit gespeichert
         }
-        AnzahlSpiele++; // Die Anzahl der gespielten Spiele wird um 1 inkrementiert
+
+        if (Debug == false) {
+            AnzahlSpiele++; // Die Anzahl der gespielten Spiele wird um 1 inkrementiert
+        }
 
         int response = JOptionPane.showConfirmDialog(frame, message + "\nBenötigte Zeit: " + seconds + " Sekunden.\nDeine beste Zeit war: " + besteZeit + " Sekunden\nDu hast bereits " + AnzahlSpiele + " Spiele gespielt.\nMöchtest du erneut spielen?", "Spielende", JOptionPane.YES_NO_OPTION); // Meldung, die anzeigt, ob das Spiel gewonnen oder verloren wurde, die benötigte Zeit, die beste Zeit, die Anzahl der gespielten Spiele und die Option, ein neues Spiel zu starten
-        if (response == JOptionPane.YES_OPTION) { // Prüfen, ob der Spieler ein neues Spiel starten möchte oder die Anwendung beenden möchte
+        if (response == JOptionPane.YES_OPTION && Debug == false) { // Prüfen, ob der Spieler ein neues Spiel starten möchte oder die Anwendung beenden möchte
             initializeGame(); // Neues Spiel starten
         } else {
-            System.exit(0); // Anwendung beenden, wenn der Spieler kein neues Spiel starten möchte
+            if (response == JOptionPane.YES_OPTION && Debug == true)   {
+                showMainMenu();
+                frame.dispose();
+            } else  {
+                System.exit(0); // Anwendung beenden, wenn der Spieler kein neues Spiel starten möchte
+            }
         }
     }
 
